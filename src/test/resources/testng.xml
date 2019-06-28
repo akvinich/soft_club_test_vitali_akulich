@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SoftClubTest">
+    <test name="UITest">
+        <classes>
+            <class name="com.club.soft.scenario.selenium.authorization.AuthorizationTest"/>
+            <class name="com.club.soft.scenario.selenium.exit.ValidExitTest"/>
+            <class name="com.club.soft.scenario.selenium.mail.SendMailTest"/>
+        </classes>
+    </test>
+</suite>
