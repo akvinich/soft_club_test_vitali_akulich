@@ -30,10 +30,6 @@
 
         <module name="AvoidNestedBlocks"/>
         <module name="EmptyBlock"/>
-        <module name="EmptyCatchBlock">
-            <property name="exceptionVariableName" value="expected|ignore|nop"/>
-            <property name="commentFormat" value="This is expected"/>
-        </module>
         <module name="LeftCurly">
             <property name="maxLineLength" value="100"/>
         </module>

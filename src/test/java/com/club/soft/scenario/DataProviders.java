@@ -10,7 +10,7 @@ public class DataProviders {
     public static Object[][] validAccount() {
         return new Object[][] {
                 {new Account()
-                        .withLogin("vital.test.600@gmail.com").withPassword("testtest600").build() },
+                        .withLogin("vas.petr.new1@gmail.com").withPassword("vaspetr600").build() },
 
         };
     }
@@ -19,11 +19,10 @@ public class DataProviders {
     public static Object[][] newMessage() {
         return new Object[][] {
                 {new Message()
-                        .withEmail("vital.test.600@gmail.com")
+                        .withEmail("vas.petr.new1@gmail.com")
                         .withTopic("job")
                         .withText("hello")
                         .build() },
-
         };
     }
 }

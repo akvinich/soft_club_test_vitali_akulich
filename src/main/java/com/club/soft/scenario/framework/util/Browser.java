@@ -2,7 +2,8 @@ package com.club.soft.scenario.framework.util;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,8 +23,12 @@ public final class Browser implements WrapsDriver {
         System.setProperty("webdriver.chrome.driver", "./src/main/resources/chromedriver.exe");
         WebDriver webDriver = null;
         DesiredCapabilities desiredCapabilities;
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-notifications");
         desiredCapabilities = DesiredCapabilities.chrome();
-        webDriver = new ChromeDriver(desiredCapabilities);
+        desiredCapabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
+        options.merge(desiredCapabilities);
+        webDriver = new ChromeDriver(options);
         webDriver.manage().deleteAllCookies();
         webDriver.manage().window().maximize();
         wrappedWebDriver = webDriver;
@@ -76,12 +81,11 @@ public final class Browser implements WrapsDriver {
     }
 
     public WebElement waitForPresenceOfElement(By by) {
-        return new WebDriverWait(wrappedWebDriver, DEFAULT_TIMEOUT_SECONDS)
-                .until(ExpectedConditions.presenceOfElementLocated(by));
+        return this.getDefaultWait().until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
     public String getText(By by) {
-        return waitForVisibilityOfElement(by).getText();
+        return waitForPresenceOfElement(by).getText();
     }
 
     public void click(By by) {
@@ -92,8 +96,14 @@ public final class Browser implements WrapsDriver {
         waitForVisibilityOfElement(by).sendKeys(Keys.chord(Keys.CONTROL, "a"), text);
     }
 
-    public void useActionsCtrlEnter(By by) {
-        new Actions(wrappedWebDriver).moveToElement(waitForPresenceOfElement(by))
-                .sendKeys(Keys.chord(Keys.CONTROL, Keys.ENTER)).build().perform();
+    public void acceptAlert() {
+        try {
+            wrappedWebDriver.switchTo().alert().accept();
+        } catch (NoAlertPresentException e) { }
     }
+
+    private WebDriverWait getDefaultWait() {
+        return new WebDriverWait(wrappedWebDriver, DEFAULT_TIMEOUT_SECONDS);
+    }
+
 }

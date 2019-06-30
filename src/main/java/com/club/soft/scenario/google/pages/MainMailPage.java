@@ -6,8 +6,6 @@ import static com.club.soft.scenario.framework.util.Browser.*;
 
 public class MainMailPage implements Page {
 
-    public static final String NAME_MAIN_FOLDER = "inbox";
-
     private By firstLetterIconLocator = By.xpath("//a[contains(@href,'SignOutOptions')]");
     private By logoutLocator = By.xpath("//a[contains(@href,'Logout')]");
     private By writeButtonLocator = By.cssSelector("div[gh=cm]");
@@ -15,7 +13,9 @@ public class MainMailPage implements Page {
     private By textLocator = By.cssSelector("div[role=textbox]");
     private By emailLocator = By.cssSelector("textarea[name=to]");
     private By sendLocator = By.cssSelector("table[role=group] div[role=button]:first-child");
-    private By isMailSendLocator = By.id("link_undo");
+    private By newMailLocator = By.cssSelector("div.UI table tr.zE");
+    private By topicInMailLocator = By.cssSelector("tr h2.hP");
+    private By textInMailLocator = By.cssSelector("tr div[role=listitem] div[dir=ltr]");
 
     @Override
     public boolean isOnThisPage() {
@@ -47,18 +47,23 @@ public class MainMailPage implements Page {
         return this;
     }
 
-    public boolean isMailSent() {
-        getInstance().waitForVisibilityOfElement(isMailSendLocator);
-        return true;
-    }
-
-    public boolean isMailReceived() {
-        return true;
+    public MainMailPage openReceivedMail() {
+        getInstance().click(newMailLocator);
+        return this;
     }
 
     public LoginPage logOut() {
         getInstance().click(firstLetterIconLocator);
         getInstance().click(logoutLocator);
+        getInstance().acceptAlert();
         return new LoginPage();
+    }
+
+    public String getTopicOfReceivedMessage() {
+        return getInstance().getText(textInMailLocator);
+    }
+
+    public String getTextOfReceivedMessage() {
+        return getInstance().getText(topicInMailLocator);
     }
 }
